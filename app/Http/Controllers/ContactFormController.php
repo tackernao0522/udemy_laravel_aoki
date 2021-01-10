@@ -116,7 +116,10 @@ class ContactFormController extends Controller
      */
     public function edit($id)
     {
-        //
+        $contact = ContactForm::find($id);
+        // dd($contact);
+
+        return view('contact.edit', compact('contact'));
     }
 
     /**
