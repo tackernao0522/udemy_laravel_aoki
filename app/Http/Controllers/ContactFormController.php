@@ -7,6 +7,7 @@ use App\Models\ContactForm;
 use Illuminate\Support\Facades\DB; // クエリビルダ用ファサード
 use App\Services\CheckFormData;
 use App\Http\Requests\StoreContactForm; // validationクラス
+use App\Services\SearchForm;
 
 class ContactFormController extends Controller
 {
@@ -15,14 +16,20 @@ class ContactFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // $contacts = ContactForm::all(); // eloquent
-        // クエリビルダ
-        $contacts = DB::table('contact_forms')
-            ->select('id', 'your_name', 'title', 'created_at')
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $search = $request->input('search');
+        // // dd($request);
+        // // $contacts = ContactForm::all(); // eloquent
+        // // クエリビルダ
+        // // $contacts = DB::table('contact_forms')
+        // //     ->select('id', 'your_name', 'title', 'created_at')
+        // //     ->orderBy('created_at', 'desc')
+        // //     ->paginate(20);
+
+        $search = SearchForm::checkSearch($search);
+
+        $contacts = $search->paginate(20);
 
         // dd($contacts);
 
